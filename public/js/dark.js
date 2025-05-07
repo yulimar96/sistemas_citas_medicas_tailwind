@@ -1,18 +1,24 @@
 
-if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-document.documentElement.classList.add('dark');
+// Verifica el tema actual y aplica la clase correspondiente
+if (localStorage.getItem('color-theme') === 'dark' || 
+    (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark');
 } else {
-document.documentElement.classList.remove('dark')
+    document.documentElement.classList.remove('dark');
 }
 
+// Obtiene los elementos de los íconos de cambio de tema
 var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
 var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
 
-// Change the icons inside the button based on previous settings
-if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-themeToggleLightIcon.classList.remove('hidden');
+// Cambia los íconos dentro del botón según la configuración anterior
+if (localStorage.getItem('color-theme') === 'dark' || 
+    (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    themeToggleLightIcon.classList.remove('hidden'); // Muestra el ícono de luz
+    themeToggleDarkIcon.classList.add('hidden'); // Oculta el ícono de oscuridad
 } else {
-themeToggleDarkIcon.classList.remove('hidden');
+    themeToggleDarkIcon.classList.remove('hidden'); // Muestra el ícono de oscuridad
+    themeToggleLightIcon.classList.add('hidden'); // Oculta el ícono de luz
 }
 
 var themeToggleBtn = document.getElementById('theme-toggle');

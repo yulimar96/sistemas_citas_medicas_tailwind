@@ -1,17 +1,34 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
 use App\Models\User;
-
+use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class UserController extends Controller
 {
-    public function index()
-    {
-        $users = User::where('status', '=', 'active')->orderBy("id","desc")->paginate(5);
-        return view("management.user.index", compact("users"));
-    }
+    use AuthorizesRequests; 
+ public function index()
+{
+    $this->authorize('viewAny', User::class);
+    // Obtener usuarios paginados (con sus roles)
+    $users = User::with('roles')->orderBy('id')->paginate(10); // 10 usuarios por página
+
+    // Conteos usando Spatie Permission
+    $adminCount = User::role('admin')->count();
+    $secretaryCount = User::role('secretaria')->count();
+    $doctorCount = User::role('doctor')->count();
+    $patientCount = User::role('paciente')->count();
+    $activeUsers = User::where('status', 'active')->count();
+
+    return view('management.user.index', compact(
+        'users',          // <- Asegúrate de incluir esta variable
+        'adminCount',
+        'secretaryCount',
+        'doctorCount',
+        'patientCount',
+        'activeUsers'
+    ));
+}
 
     public function create()
     {
@@ -19,8 +36,8 @@ class UserController extends Controller
     }
     public function show($id)
     {
-        $usuario = User::findOrFail($id);
-        return response()->json($usuario); // Devuelve los datos del usuario en formato JSON
+        $user = User::findOrFail($id);
+        return view("management.user.show", compact("user")); // Devuelve los datos del usuario en formato JSON
     }
     public function store(Request $request)
     {   
@@ -35,7 +52,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password), // Encriptar la contraseña
         ]);
-        return redirect()->route('user.index')->with('success', 'Usuario creado exitosamente.');
+        return redirect()->route('user')->with('success', 'Usuario creado exitosamente.');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Error al crear el usuario: ' . $e->getMessage());
     }
@@ -72,7 +89,7 @@ public function update(Request $request, $id)
 
         $user->update(); // Guardar los cambios
 
-        return redirect()->route('user.index')->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('user')->with('success', 'Usuario actualizado exitosamente.');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Error al actualizar el usuario: ' . $e->getMessage());
     }
@@ -86,12 +103,12 @@ public function destroy($id)
     $user->status = 'inactive'; // O 'desactive', según tu preferencia
     $user->save(); // Guardar los cambios
 
-    return redirect()->route('user.index')->with('success', 'Usuario deshabilitado exitosamente.');
+    return redirect()->route('user')->with('success', 'Usuario deshabilitado exitosamente.');
 }
 
 public function resetear($id)
 {
     $user = User::findOrFail($id);
-    return redirect()->route('user.index')->with('success', 'Usuario reseteado exitosamente.');
+    return redirect()->route('user')->with('success', 'Usuario reseteado exitosamente.');
 }
 }

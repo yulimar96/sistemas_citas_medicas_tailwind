@@ -1,76 +1,138 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Models\Secretariets;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Persons;
+use App\Models\scheduleDetail;
+use App\Models\FederalStates;
+use App\Models\Employee;
+use App\Models\EmployeeContractTypes;
+use App\Models\OrganizationalUnitTypes;
+use App\Models\EmployeePosition;
+use Illuminate\Support\Facades\{DB, Hash};
+
 
 class SecretariatController extends Controller
 {
-    public function index()
-    {
-        // $secretariats = Secretariat::where('status', '=', 'active')->orderBy("id","desc")->paginate(5);
-        // return view("management.secretariat.index", compact("secretariats"));
-        $users = User::count();
-        $secretariats = Secretariets::with('user')->get();
-        return view('management.secretariat.index', compact('users', 'secretariats'));
-    }
+public function index()
+{
+    return view('management.secretariat.index', [
+        'employee_contract' => EmployeeContractTypes::all(),
+        'organizational_unit' => OrganizationalUnitTypes::all(),
+        'position' => EmployeePosition::all(),
+        'schedules' => scheduleDetail::all(),
+        'states' => FederalStates::with(['cities', 'municipalities.parishes'])->get(),
+        'users' => User::where('status', 'active')->count(),
+        'secretariats' => Employee::where('employee_type', 'Secretaria')
+                                ->where('status', 'active')
+                                ->paginate(10),
+        'secretariat' => Employee::where('employee_type', 'Secretaria')->count()
+    ]);
+}
 
-    public function create()
-    {
-        //
-    }
     public function show($id)
     {
-        $secretariat = Secretariat::findOrFail($id);
-        return response()->json($usuario); // Devuelve los datos del usuario en formato JSON
+        $Secretariat = Employee::with('user')->findOrFail($id);
+        return view('management.secretariat.show', compact( 'Secretariat'));
+      
+        
     }
-    public function store(Request $request)
-    {   
-        // dd($request->all());
-        // return response()->json($request);
+public function store(Request $request)
+{   
     try {
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'last_name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email', // Cambia 'your_table' por el nombre de tu tabla
-        'birthdate' => 'required|date',
-        'nacionality' => 'required|string',
-        'identification_number' => 'required|string|max:20',
-        'address' => 'required|string|max:255',
-        'code_area' => 'required|string',
-        'phone' => 'required|string|max:15',
-        'password' => 'required|string|min:8|confirmed', // 'confirmed' verifica que el campo 'confirm_password' coincida
-        ]);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password), // Encriptar la contraseña
+        // Validación de los campos
+        $validatedData = $request->validate([
+            'name_1' => 'required|string|max:255',
+            'name_2' => 'nullable|string|max:255',
+            'surname_1' => 'required|string|max:255',
+            'surname_2' => 'nullable|string|max:255',
+            'sex' => 'required|boolean',
+            'birthdate' => 'required|date',
+            'blood_type' => 'required|string|max:20',
+            'nacionality' => 'required|string|max:50',
+            'identification_number' => 'required|string|max:20|unique:peoples,identification_number',
+            'email' => 'required|email|unique:users,email',
+            'code_area' => 'required|string|max:7',
+            'phone' => 'required|string|max:15',
+            'cell_phone_area_codes' => 'required|string|max:7',
+            'cellphone_number' => 'required|string|max:7',
+            'federals_state_id' => 'required|exists:federal_states,id',
+            'municipalities_id' => 'required|exists:municipalities,id',
+            'parish_id' => 'required|exists:parishes,id',
+            'room_type' => 'required|string|max:100',
+            'level_of_education' => 'required|string|max:100',
+            'employee_contract_types_id' => 'nullable|exists:employee_contract_types,id',
+            'employee_position_id' => 'nullable|exists:employee_positions,id',
+            'organizational_unit_types_id' => 'nullable|exists:organizational_unit_types,id',
+            'hire_date' => 'required|date',
+            'password' => 'required|string|min:8', // Asegúrate de validar la contraseña
+            'schedule_id' => 'required|exists:schedules,id', // Asegúrate de validar el schedule_id
+ // Asegúrate de validar el position_id
         ]);
 
-        $secretariat = new secretariat();
-        $secretariat->user_id = $user->id;
-        $secretariat->name = $request->name;
-        $secretariat->last_name = $request->last_name;
-        $secretariat->nacionality = $request->nacionality;
-        $secretariat->identification_number = $request->identification_number;
-        $secretariat->birthdate = $request->birthdate;
-        $secretariat->code_area = $request->code_area;
-        $secretariat->phone = $request->phone;
-        $secretariat->address = $request->address;
-        $secretariat->save();
+        return DB::transaction(function () use ($validatedData) {
+            // Crear el usuario
+            $user = User::create([
+                'name' => "{$validatedData['name_1']} {$validatedData['surname_1']}",
+                'email' => $validatedData['email'],
+                'password' => Hash::make($validatedData['password']), // Encriptar la contraseña
+                'status' => 'active'
+            ]);
 
-        return redirect()->route('secretariat.index')->with('success', 'Secretaria creada exitosamente.');
+            // Crear la persona
+            $person = new Persons();
+            $person->name_1 = $validatedData['name_1'];
+            $person->name_2 = $validatedData['name_2'];
+            $person->surname_1 = $validatedData['surname_1'];
+            $person->surname_2 = $validatedData['surname_2'];
+            $person->sex = $validatedData['sex'];
+            $person->birth_date = $validatedData['birthdate'];
+            $person->blood_type = $validatedData['blood_type'];
+            $person->nacionality = $validatedData['nacionality'];
+            $person->identification_number = $validatedData['identification_number'];
+            $person->phone_area_codes = $validatedData['code_area'];
+            $person->phone_number = $validatedData['phone'];
+            $person->cell_phone_area_codes = $validatedData['cell_phone_area_codes'];
+            $person->cellphone_number = $validatedData['cellphone_number'];
+            $person->federals_state_id = $validatedData['federals_state_id'];
+            $person->municipalities_id = $validatedData['municipalities_id'];
+            $person->parish_id = $validatedData['parish_id'];
+            $person->room_type = $validatedData['room_type'];
+            $person->level_of_education = $validatedData['level_of_education'];
+            $person->user_id = $user->id;
+            $person->status = 'active';
+            $person->save();
+
+            // Crear la secretaria
+            $secretariat = new Employee();
+            $secretariat->status = 'active';
+            $secretariat->person_id = $person->id; 
+            $secretariat->employee_type = 'Secretaria';
+            $secretariat->schedule_id  =  $validatedData['schedule_id'];
+            $secretariat->hire_date = $validatedData['hire_date']; 
+            $secretariat->employee_contract_types_id = $validatedData['employee_contract_types_id']; 
+            $secretariat->employee_position_id = $validatedData['employee_position_id']; 
+            $secretariat->organizational_unit_types_id = $validatedData['organizational_unit_types_id']; 
+            $secretariat->save();
+
+            return redirect()->route('secretariat')->with('success', 'Secretaria creada exitosamente.');
+        });
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Error al crear a la Secretaria: ' . $e->getMessage());
     }
 }
 public function getUser($id)
 {
-    $secretariat = Secretariets::findOrFail($id);
+    $secretariat = Employee::findOrFail($id);
     return response()->json($user);
 }
+public function edit($id)
+{
+    $secretariat = Employee::findOrFail($id);
+    return view('management.secretariat.edit', compact( 'secretariat'));
+}
+
 
 public function update(Request $request, $id)
 {
@@ -84,7 +146,7 @@ public function update(Request $request, $id)
         ]);
         
         // Encontrar el usuario por ID
-        $secretariat = Secretariets::findOrFail($id); // Usar findOrFail para lanzar una excepción si no se encuentra
+        $secretariat = Employee::findOrFail($id); // Usar findOrFail para lanzar una excepción si no se encuentra
 
         // Actualizar los datos del usuario
         $secretariat->name = $request->name;
@@ -98,7 +160,7 @@ public function update(Request $request, $id)
 
         $secretariat->update(); // Guardar los cambios
 
-        return redirect()->route('secretariat.index')->with('success', 'Usuario actualizado exitosamente.');
+        return redirect()->route('secretariat')->with('success', 'Usuario actualizado exitosamente.');
     } catch (\Exception $e) {
         return redirect()->back()->with('error', 'Error al actualizar el usuario: ' . $e->getMessage());
     }
@@ -106,13 +168,13 @@ public function update(Request $request, $id)
 
 public function destroy($id)
 {
-    $secretariat = Secretariat::findOrFail($id);
+    $secretariat = Employee::findOrFail($id);
     
     // Cambiar el estado del usuario a 'inactive'
     $secretariat->status = 'inactive'; // O 'desactive', según tu preferencia
     $secretariat->save(); // Guardar los cambios
 
-    return redirect()->route('secretariat.index')->with('success', 'Usuario deshabilitado exitosamente.');
+    return redirect()->route('secretariat')->with('success', 'Usuario deshabilitado exitosamente.');
 }
 
 }

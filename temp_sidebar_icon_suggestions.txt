@@ -1,0 +1,112 @@
+Sugerencias de iconos SVG para sidebar.blade.php:
+
+1. Panel de Control (Dashboard)
+Icono actual: gráfico circular
+Sugerencia: Mantener icono de dashboard (gráfico circular)
+
+<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+    <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+    <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+</svg>
+
+2. Clinic Management Dropdown
+
+- Users
+Icono actual: usuario
+Sugerencia: Mantener icono de usuario
+
+<svg class="w-4 h-4 mr-3 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+</svg>
+
+- Secretariats
+Icono actual: edificio/carpeta
+Sugerencia: Mantener icono de oficina/secretaría
+
+<svg class="w-4 h-4 mr-3 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+</svg>
+
+- Employees
+Icono actual: edificio
+Sugerencia: Cambiar a icono de grupo de personas
+
+<svg class="w-4 h-4 mr-3 text-green-500 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+</svg>
+
+- Doctors
+Icono actual: grupo personas
+Sugerencia: Mantener o usar icono de médico (cruz o estetoscopio)
+
+<svg class="w-4 h-4 mr-3 text-teal-500 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zM15 7a3 3 0 11-6 0 3 3 0 016 0zM21 10a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+</svg>
+
+- Patients
+Icono actual: carpeta/archivo
+Sugerencia: Cambiar a icono de paciente o persona
+
+<svg class="w-4 h-4 mr-3 text-purple-500 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+</svg>
+
+3. Doctor Schedule
+Icono actual: calendario
+Sugerencia: Mantener icono calendario
+
+<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+</svg>
+
+4. Organización y Tipo de Organización
+Icono actual: edificio
+Sugerencia: Mantener icono edificio
+
+<svg class="w-5 h-5 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+</svg>
+
+5. Consultorio Management
+Icono actual: casa
+Sugerencia: Mantener icono casa
+
+<svg class="w-5 h-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+</svg>
+
+6. My Information
+Icono actual: usuario
+Sugerencia: Mantener icono usuario
+
+<svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+</svg>
+
+7. Medical Appointments
+Icono actual: usuario (repetido)
+Sugerencia: Cambiar a icono calendario
+
+<svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+</svg>
+
+8. Payments
+Icono actual: usuario (repetido)
+Sugerencia: Cambiar a icono dinero o tarjeta
+
+<svg class="w-5 h-5 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a4 4 0 00-8 0v2a4 4 0 00-4 4v5a2 2 0 002 2h12a2 2 0 002-2v-5a4 4 0 00-4-4z" />
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m0-6v2" />
+</svg>
+
+9. Configuración
+Icono actual: calendario
+Sugerencia: Cambiar a icono engranaje
+
+<svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" />
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.4 15a7.97 7.97 0 01-1.4 2.4l1.4 1.4-1.4 1.4-1.4-1.4a7.97 7.97 0 01-2.4 1.4v2h-2v-2a7.97 7.97 0 01-2.4-1.4l-1.4 1.4-1.4-1.4 1.4-1.4a7.97 7.97 0 01-1.4-2.4h-2v-2h2a7.97 7.97 0 011.4-2.4l-1.4-1.4 1.4-1.4 1.4 1.4a7.97 7.97 0 012.4-1.4v-2h2v2a7.97 7.97 0 012.4 1.4l1.4-1.4 1.4 1.4-1.4 1.4a7.97 7.97 0 011.4 2.4h2v2h-2z" />
+</svg>
+
+Estos son los iconos sugeridos para cada ítem. Por favor revisa y confirma si quieres que los aplique en el archivo sidebar.blade.php.
